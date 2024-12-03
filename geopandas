@@ -1,0 +1,23 @@
+import geopandas as gpd
+
+# Load shapefile data (replace 'path_to_shapefile' with your actual shapefile path)
+@st.cache
+def load_shapefile():
+    shapefile_path = "path_to_shapefile/spain_boundaries.shp"
+    gdf = gpd.read_file(shapefile_path)
+    return gdf
+
+# Load geospatial data
+gdf = load_shapefile()
+
+# Add GeoJSON overlay to map
+folium.GeoJson(
+    gdf.to_crs("EPSG:4326"),  # Ensure proper CRS for web mapping
+    name="Spanish Boundaries",
+    style_function=lambda x: {
+        "fillColor": "green",
+        "color": "black",
+        "weight": 0.5,
+        "fillOpacity": 0.2,
+    },
+).add_to(m)
